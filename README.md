@@ -1,0 +1,2 @@
+# codingkatas
+Some Coding Katas
