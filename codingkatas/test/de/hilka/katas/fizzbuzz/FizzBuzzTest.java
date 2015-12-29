@@ -49,5 +49,18 @@ public class FizzBuzzTest {
 	public void returnsFizzBuzzForMultipleOfFiveteen() throws Exception {
 		assertEquals("FizzBuzz", m_result.get(14));
 		assertEquals("FizzBuzz", m_result.get(29));
+		assertEquals("FizzBuzz", m_result.get(50));
+	}
+	
+	@Test
+	public void returnsFizzIfThreeIsPartOfTheNumber() throws Exception {
+		assertEquals("Fizz", m_result.get(12));
+		assertEquals("Fizz", m_result.get(22));
+		assertEquals("Fizz", m_result.get(30));
+	}
+	
+	@Test
+	public void returnsBuzzIfNumberContainsAFive() throws Exception {
+		assertEquals("Buzz", m_result.get(51));
 	}
 }
