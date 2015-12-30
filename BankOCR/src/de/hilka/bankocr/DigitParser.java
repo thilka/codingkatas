@@ -39,9 +39,7 @@ public class DigitParser {
     }
 
     private String m_digits = "";
-    public String getDigits() {
-        return m_digits;
-    }
+    public String getDigits() { return m_digits; }
 
 
     private enum Digit {

@@ -23,12 +23,13 @@ public class BankOCRTest {
         assertEquals("123456789", accountList.get(0));
     }
 
-    @Ignore
     @Test
     public void canReadFileWithThreeLines() throws Exception {
         List<String> accountList = new BankOCR().extractFromFile("/threelines.txt");
-        assertEquals(1, accountList.size());
+        assertEquals(3, accountList.size());
         assertEquals("123456789", accountList.get(0));
+        assertEquals("456789123", accountList.get(1));
+        assertEquals("123894567", accountList.get(2));
     }
 
 }

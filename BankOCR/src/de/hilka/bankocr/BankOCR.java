@@ -17,21 +17,25 @@ public class BankOCR {
 
     public List<String> extractFromFile(String fileName) {
 
-        List<String> inputLines = new ArrayList<String>();
-        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(fileName).toURI()))) {
+        List<String> inputLines = readFileIntoLines(fileName);
 
-            stream.forEach(inputLines::add);
+        List<String> result = parseInputLines(inputLines);
 
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+        return result;
+    }
 
+    private List<String> parseInputLines(List<String> inputLines) {
         List<String> result = new ArrayList<String>();
 
         String firstLine = null;
         String secondLine = null;
         String thirdLine = null;
+        boolean skipLine = false;
         for (String line : inputLines) {
+            if (skipLine) {
+                skipLine = false;
+                continue;
+            }
             if (firstLine == null) {
                 firstLine = line;
             } else if (secondLine == null) {
@@ -45,15 +49,23 @@ public class BankOCR {
                 firstLine = null;
                 secondLine = null;
                 thirdLine = null;
+                skipLine = true;
             }
         }
-
-
         return result;
     }
 
+    private List<String> readFileIntoLines(String fileName) {
+        List<String> inputLines = new ArrayList<String>();
+        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(fileName).toURI()))) {
 
+            stream.forEach(inputLines::add);
 
-
+        } catch (IOException | URISyntaxException e) {
+            // TODO: proper exception handling
+            e.printStackTrace();
+        }
+        return inputLines;
+    }
 
 }
