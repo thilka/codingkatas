@@ -1,9 +1,6 @@
 package de.hilka.bankocr;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
