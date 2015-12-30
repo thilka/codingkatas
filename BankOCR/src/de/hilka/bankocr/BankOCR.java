@@ -15,45 +15,45 @@ import java.util.stream.Stream;
  */
 public class BankOCR {
 
-	public List<String> extractFromFile(String fileName) {
-		
-		List<String> inputLines = new ArrayList<String>();
-		try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(fileName).toURI()))) {
-			
-			stream.forEach(inputLines::add);
+    public List<String> extractFromFile(String fileName) {
 
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
+        List<String> inputLines = new ArrayList<String>();
+        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(fileName).toURI()))) {
 
-		List<String> result = new ArrayList<String>();
+            stream.forEach(inputLines::add);
 
-		String firstLine = null;
-		String secondLine = null;
-		String thirdLine = null;
-		for (String line : inputLines) {
-			if (firstLine == null) {
-				firstLine = line;
-			} else if (secondLine == null) {
-				secondLine = line;
-			} else if (thirdLine == null) {
-				thirdLine = line;
-			}
-			
-			if (thirdLine != null) {
-				result.add(new DigitParser(firstLine, secondLine, thirdLine).getDigits());
-				firstLine = null;
-				secondLine = null;
-				thirdLine = null;
-			}
-		}
-		
-		
-		return result;
-	}
-	
-	
-	
-	
-	
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        List<String> result = new ArrayList<String>();
+
+        String firstLine = null;
+        String secondLine = null;
+        String thirdLine = null;
+        for (String line : inputLines) {
+            if (firstLine == null) {
+                firstLine = line;
+            } else if (secondLine == null) {
+                secondLine = line;
+            } else if (thirdLine == null) {
+                thirdLine = line;
+            }
+
+            if (thirdLine != null) {
+                result.add(new DigitParser(firstLine, secondLine, thirdLine).getDigits());
+                firstLine = null;
+                secondLine = null;
+                thirdLine = null;
+            }
+        }
+
+
+        return result;
+    }
+
+
+
+
+
 }
