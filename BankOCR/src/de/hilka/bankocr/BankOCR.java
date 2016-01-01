@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * See http://codingdojo.org/cgi-bin/index.pl?back=KataBankOCR
+ * See http://codingdojo.org/cgi-bin/index.pl?KataBankOCR
  * @author thilka
  *
  */
