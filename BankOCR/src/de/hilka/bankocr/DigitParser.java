@@ -1,6 +1,12 @@
 package de.hilka.bankocr;
 
-
+/**
+ * A digit parser parses three lines that represent the bank account number
+ * consisting of 9 digits.
+ * 
+ * @author thilka
+ *
+ */
 public class DigitParser {
 
     private String m_firstLine;
@@ -21,28 +27,55 @@ public class DigitParser {
     }
 
     private void parseLines() {
-        String partFromFirstLine = "";
-        String partFromSecondLine = "";
-        String partFromThirdLine = "";
+        Digit currentDigit = null;
         for (int i = 0; i < m_firstLine.length(); i++) {
-            partFromFirstLine += m_firstLine.subSequence(i, i + 1);
-            partFromSecondLine += m_secondLine.subSequence(i, i + 1);
-            partFromThirdLine += m_thirdLine.subSequence(i, i + 1);
-            if (i > 0 && (i + 1) % 3 == 0) {
-                m_digits += Digit.getDigit(partFromFirstLine, partFromSecondLine, partFromThirdLine);
-                partFromFirstLine = "";
-                partFromSecondLine = "";
-                partFromThirdLine = "";
+            
+            if (currentDigit == null) {
+                currentDigit = new Digit();
+            }
+            
+            currentDigit.addChars(
+                    nextCharacter(m_firstLine, i), 
+                    nextCharacter(m_secondLine, i),
+                    nextCharacter(m_thirdLine, i));
+            
+            if (currentDigit.isComplete()) {
+                m_digits += currentDigit.getDigit();
+                currentDigit = null;
             }
         }
-
+    }
+    
+    private String nextCharacter(String line, int index) {
+        return line.substring(index, index + 1);
     }
 
     private String m_digits = "";
     public String getDigits() { return m_digits; }
 
+    private class Digit {
+        String digitCharsInFirstLine = "";
+        String digitCharsSecondLine = "";
+        String digitCharsThirdLine = "";
 
-    private enum Digit {
+        private void addChars(CharSequence firstLineChar, CharSequence secondLineChar, CharSequence thirdLineChar) {
+            digitCharsInFirstLine += firstLineChar;
+            digitCharsSecondLine += secondLineChar;
+            digitCharsThirdLine += thirdLineChar;
+        }
+        
+        private String getDigit() {
+            return DigitEnum.getDigit(digitCharsInFirstLine, digitCharsSecondLine, digitCharsThirdLine);
+        }
+        
+        private boolean isComplete() {
+            return digitCharsInFirstLine != null && digitCharsInFirstLine.length() == 3
+                    && digitCharsSecondLine != null && digitCharsSecondLine.length() == 3
+                    && digitCharsThirdLine != null && digitCharsThirdLine.length() == 3;
+        }
+    }
+
+    private enum DigitEnum {
         ZERO   ("0", 
                 " _ ", 
                 "| |", 
@@ -96,7 +129,7 @@ public class DigitParser {
         private String m_thirdLine;
         public String getThirdLine() { return m_thirdLine; }
 
-        private Digit(String value, String firstLine, String secondLine, String thirdLine) {
+        private DigitEnum(String value, String firstLine, String secondLine, String thirdLine) {
             m_value = value;
             m_firstLine = firstLine;
             m_secondLine = secondLine;
@@ -104,14 +137,14 @@ public class DigitParser {
         }
 
         public static String getDigit(String firstLine, String secondLine, String thirdLine) {
-            for (Digit digit : values()) {
+            for (DigitEnum digit : values()) {
                 if (digit.getFirstLine().equals(firstLine)
                         && digit.getSecondLine().equals(secondLine) 
                         && digit.getThirdLine().endsWith(thirdLine)) {
                     return digit.getValue();
                 }
             }
-            return null;
+            throw new AccountNumberParseException(firstLine, secondLine, thirdLine);
         }
 
     }

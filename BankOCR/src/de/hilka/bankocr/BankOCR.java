@@ -2,6 +2,7 @@ package de.hilka.bankocr;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -30,10 +31,9 @@ public class BankOCR {
         String firstLine = null;
         String secondLine = null;
         String thirdLine = null;
-        boolean skipLine = false;
         for (String line : inputLines) {
-            if (skipLine) {
-                skipLine = false;
+            if (line.trim().isEmpty()) {
+                // ignore empty lines
                 continue;
             }
             if (firstLine == null) {
@@ -49,7 +49,6 @@ public class BankOCR {
                 firstLine = null;
                 secondLine = null;
                 thirdLine = null;
-                skipLine = true;
             }
         }
         return result;
@@ -57,13 +56,16 @@ public class BankOCR {
 
     private List<String> readFileIntoLines(String fileName) {
         List<String> inputLines = new ArrayList<String>();
-        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(fileName).toURI()))) {
+        URL resource = getClass().getResource(fileName);
+        if (resource == null) {
+            throw new AccountNumberReadingException(fileName, null);
+        }
+        try (Stream<String> stream = Files.lines(Paths.get(resource.toURI()))) {
 
             stream.forEach(inputLines::add);
 
         } catch (IOException | URISyntaxException e) {
-            // TODO: proper exception handling
-            e.printStackTrace();
+            throw new AccountNumberReadingException(fileName, e);
         }
         return inputLines;
     }

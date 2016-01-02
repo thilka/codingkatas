@@ -34,9 +34,20 @@ public class DigitParserTest {
         String lineOne =   "    _  _     _  _  _  _  _  _ ";
         String lineTwo =   "  | _| _||_||_ |_   ||_||_|| |";
         String lineThree = "  ||_  _|  | _||_|  ||_| _||_|";
-        String digits =  new DigitParser(lineOne, lineTwo, lineThree).getDigits();
+        String digits = new DigitParser(lineOne, lineTwo, lineThree).getDigits();
         assertEquals(10, digits.length());
         assertEquals("1234567890", digits);
     }
+    
+    @Test (expected = AccountNumberParseException.class)
+    public void throwsExceptionIfDigitIsUnknown() throws Exception {
+        String lineOne =   " _ ";
+        String lineTwo =   "|_ ";
+        String lineThree = "|_ ";
+        String digits = new DigitParser(lineOne, lineTwo, lineThree).getDigits();
+        System.out.println(digits);
+    }
+    
+    
 
 }

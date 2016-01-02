@@ -1,10 +1,9 @@
 package de.hilka.bankocr;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -30,6 +29,12 @@ public class BankOCRTest {
         assertEquals("123456789", accountList.get(0));
         assertEquals("456789123", accountList.get(1));
         assertEquals("123894567", accountList.get(2));
+    }
+    
+    @Test (expected = AccountNumberParseException.class)
+    public void throwsParseExceptionIfLineNotProperlyFormatted() throws Exception {
+        new BankOCR().extractFromFile("/unknownFile.txt");
+        
     }
 
 }
