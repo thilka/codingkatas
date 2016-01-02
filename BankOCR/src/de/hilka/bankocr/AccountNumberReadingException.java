@@ -12,6 +12,6 @@ public class AccountNumberReadingException extends RuntimeException {
     
     @Override
     public String getMessage() {
-        return String.format("Cannot read account numbers from file: '$s'", m_fileName);
+        return String.format("Cannot read account numbers from file: '%s'", m_fileName);
     }
 }

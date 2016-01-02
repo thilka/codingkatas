@@ -12,7 +12,7 @@ public class AccountNumberValidationException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return String.format("Account number '$s' not valid.", m_accountNumber);
+        return String.format("Account number '%s' not valid.", m_accountNumber);
     }
     
 }
