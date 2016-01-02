@@ -45,7 +45,9 @@ public class BankOCR {
             }
 
             if (thirdLine != null) {
-                result.add(new DigitParser(firstLine, secondLine, thirdLine).getDigits());
+                String digits = new DigitParser(firstLine, secondLine, thirdLine).getDigits();
+                AccountNumber accountNumber = new AccountNumber(digits);
+                result.add(accountNumber.getAccountNumber());
                 firstLine = null;
                 secondLine = null;
                 thirdLine = null;
