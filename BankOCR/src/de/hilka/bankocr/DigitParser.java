@@ -76,6 +76,10 @@ public class DigitParser {
     }
 
     private enum DigitEnum {
+        UNKNOWN("?", 
+                "", 
+                "", 
+                ""),
         ZERO   ("0", 
                 " _ ", 
                 "| |", 
@@ -144,7 +148,7 @@ public class DigitParser {
                     return digit.getValue();
                 }
             }
-            throw new AccountNumberParseException(firstLine, secondLine, thirdLine);
+            return UNKNOWN.getValue();
         }
 
     }

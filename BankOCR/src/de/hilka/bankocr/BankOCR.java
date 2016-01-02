@@ -47,7 +47,9 @@ public class BankOCR {
             if (thirdLine != null) {
                 String digits = new DigitParser(firstLine, secondLine, thirdLine).getDigits();
                 AccountNumber accountNumber = new AccountNumber(digits);
-                result.add(accountNumber.getAccountNumber());
+                
+                result.add(getResultLine(accountNumber));
+                
                 firstLine = null;
                 secondLine = null;
                 thirdLine = null;
@@ -55,21 +57,42 @@ public class BankOCR {
         }
         return result;
     }
+    
+    private String getResultLine(AccountNumber accountNumber) {
+        String accountNumberString = accountNumber.getAccountNumber();
+        if (!accountNumber.hasAllValidDigits()) {
+            return accountNumberString + " ILL";
+        }
+        
+        if (!accountNumber.hasValidChecksum()) {
+            return accountNumberString + " ERR";
+        }
+        return accountNumberString;
+    }
 
     private List<String> readFileIntoLines(String fileName) {
         List<String> inputLines = new ArrayList<String>();
         URL resource = getClass().getResource(fileName);
         if (resource == null) {
-            throw new AccountNumberReadingException(fileName, null);
+            throw new AccountFileReadingException(fileName, null);
         }
         try (Stream<String> stream = Files.lines(Paths.get(resource.toURI()))) {
 
             stream.forEach(inputLines::add);
 
         } catch (IOException | URISyntaxException e) {
-            throw new AccountNumberReadingException(fileName, e);
+            throw new AccountFileReadingException(fileName, e);
         }
         return inputLines;
+    }
+
+    public void writeLinesToOutputFile(String fileName, List<String> lines) {
+        try {
+            Files.write(Paths.get(fileName), lines);
+        } catch (IOException e) {
+            // TODO: handle exceptions properly
+            e.printStackTrace();
+        }
     }
 
 }

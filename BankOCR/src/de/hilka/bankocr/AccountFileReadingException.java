@@ -1,11 +1,11 @@
 package de.hilka.bankocr;
 
-public class AccountNumberReadingException extends RuntimeException {
+public class AccountFileReadingException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private String m_fileName;
     
-    public AccountNumberReadingException(String fileName, Throwable cause) {
+    public AccountFileReadingException(String fileName, Throwable cause) {
         super(cause);
         m_fileName = fileName;
     }

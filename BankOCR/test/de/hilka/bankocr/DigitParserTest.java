@@ -39,13 +39,13 @@ public class DigitParserTest {
         assertEquals("1234567890", digits);
     }
     
-    @Test (expected = AccountNumberParseException.class)
+    @Test
     public void throwsExceptionIfDigitIsUnknown() throws Exception {
         String lineOne =   " _ ";
         String lineTwo =   "|_ ";
         String lineThree = "|_ ";
         String digits = new DigitParser(lineOne, lineTwo, lineThree).getDigits();
-        System.out.println(digits);
+        assertEquals("?", digits);
     }
     
     

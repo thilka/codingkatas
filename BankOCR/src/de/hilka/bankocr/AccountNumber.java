@@ -15,12 +15,24 @@ public class AccountNumber {
         }
         
         int checksum = calculateCheckSum();
-        if (checksum % 11 != 0) {
-            throw new AccountNumberValidationException(m_accountNumber);
+        if (checksum % 11 == 0) {
+            m_validChecksum = true;
         }
+        
+        m_allValidDigits = !m_accountNumber.contains("?");
     }
+    
+    private boolean m_validChecksum;
+    public boolean hasValidChecksum() { return m_validChecksum; }
 
+    private boolean m_allValidDigits;
+    public boolean hasAllValidDigits() { return m_allValidDigits; }
+    
+    
     private int calculateCheckSum() {
+        if (m_accountNumber.contains("?")) {
+            return -1;
+        }
         int checksum = 0;
         for (int i = 9; i > 0; i--) {
             int digit = Integer.parseInt("" + m_accountNumber.charAt(i - 1));
